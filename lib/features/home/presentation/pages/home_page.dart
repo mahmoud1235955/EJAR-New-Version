@@ -1,6 +1,6 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
-import 'package:ejar/features/editProfile/presentation/widgets/edit_profile_widget.dart';
+import 'package:ejar/features/Profile/presentation/widgets/edit_profile_widget.dart';
 import 'package:ejar/features/home/presentation/manager/index/cubit/current_index_cubit.dart';
 import 'package:ejar/features/home/presentation/widgets/add_widget.dart';
 import 'package:ejar/features/home/presentation/widgets/chat_widget.dart';

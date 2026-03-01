@@ -73,6 +73,8 @@ class EmailLoginPage extends StatelessWidget {
                       const SizedBox(height: 40),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.emailAddress,
                         controller: emailController,
                         label: "Email Address",
                         icon: Icons.email_outlined,
@@ -82,6 +84,8 @@ class EmailLoginPage extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.visiblePassword,
                         controller: passwordController,
                         label: "Password",
                         icon: Icons.lock_outline,

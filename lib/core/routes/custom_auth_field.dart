@@ -5,10 +5,11 @@ class CustomAuthField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final IconData icon;
+  final int? maxLines;
   final bool isPassword;
   final Widget? suffix;
   final String? Function(String?)? validator; // عشان الـ Validation يشتغل
-
+  final TextInputType? keyboardType;
   const CustomAuthField({
     super.key, // key,
     required this.controller,
@@ -17,11 +18,15 @@ class CustomAuthField extends StatelessWidget {
     this.isPassword = false,
     this.suffix,
     this.validator,
+    required this.keyboardType,
+    required this.maxLines,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
       obscureText: isPassword,
       validator: validator, // الربط مع الـ FormKey
       cursorColor: AppColors.primary, // لون المؤشر 087513

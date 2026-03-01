@@ -78,6 +78,8 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 40),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.text,
                         controller: nameController,
                         label: "Full Name",
                         icon: Icons.person_outline,
@@ -88,6 +90,8 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.phone,
                         controller: phoneController,
                         label: "Phone Number",
                         icon: Icons.phone_android_outlined,
@@ -98,6 +102,8 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.emailAddress,
                         controller: emailController,
                         label: "Email Address",
                         icon: Icons.email_outlined,
@@ -108,6 +114,8 @@ class SignupScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       CustomAuthField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.visiblePassword,
                         controller: passwordController,
                         label: "Password",
                         icon: Icons.lock_outline,

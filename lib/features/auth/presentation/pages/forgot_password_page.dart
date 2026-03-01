@@ -72,6 +72,8 @@ class ForgotPasswordPage extends StatelessWidget {
 
                     // حقل الإيميل
                     CustomAuthField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       label: "Email Address",
                       icon: Icons.email_outlined,
