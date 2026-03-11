@@ -15,11 +15,11 @@ class RecivePropiritiesCubit extends Cubit<RecivePropiritiesState> {
       final stream = supabase
           .from("properties")
           .stream(primaryKey: ["id"])
-          .eq("user_id", supabase.auth.currentUser!.id);
+          .neq("user_id", supabase.auth.currentUser!.id);
       stream.listen((List<Map<String, dynamic>> data) {
         propirities = data.map((e) => AddPropirityModel.fromMap(e)).toList();
+        emit(RecivePropiritiesSuccess(propirities: List.from(propirities)));
       });
-      emit(RecivePropiritiesSuccess(propirities: List.from(propirities)));
     } on AuthException catch (e) {
       emit(RecivePropiritiesFailure(message: e.message));
     } catch (e) {

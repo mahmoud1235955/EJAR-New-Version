@@ -67,9 +67,9 @@ class AddBikePage extends StatelessWidget {
                   CustomAuthField(
                     maxLines: 1,
                     keyboardType: TextInputType.text,
-                    label: "Condition",
-                    icon: Icons.info_outline,
-                    controller: cubit.condition,
+                    label: "Location",
+                    icon: Icons.location_on_outlined,
+                    controller: cubit.location,
                   ),
                   15.gap,
                   CustomAuthField(
@@ -77,6 +77,14 @@ class AddBikePage extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     label: "Hourly/Daily Rate",
                     icon: Icons.timer,
+                    controller: cubit.price_per_day,
+                  ),
+                  15.gap,
+                  CustomAuthField(
+                    maxLines: 1,
+                    keyboardType: TextInputType.text,
+                    label: "Description",
+                    icon: Icons.description_outlined,
                     controller: cubit.price_per_day,
                   ),
                   30.gap,

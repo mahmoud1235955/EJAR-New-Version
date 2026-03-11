@@ -52,11 +52,11 @@ class AddPropirityCubit extends Cubit<AddPropirityState> {
       if (currentUser != null) {
         final propirity = AddPropirityModel(
           user_id: currentUser.id,
-          title: titleController.text,
+          name: titleController.text,
           location: locationController.text,
-          price_per_month: priceController.text,
-          img_url: imagePath,
-          description: descriptionController.text,
+          price_per_day: priceController.text,
+          image_url: imagePath,
+          descripttion: descriptionController.text,
         );
         await supabase.from('properties').insert(propirity.toMap());
         emit(AddPropiritySuccess());

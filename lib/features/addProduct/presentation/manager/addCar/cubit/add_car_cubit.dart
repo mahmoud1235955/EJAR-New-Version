@@ -12,10 +12,8 @@ part 'add_car_state.dart';
 
 class AddCarCubit extends Cubit<AddCarState> {
   final supabase = Supabase.instance.client;
-  TextEditingController brandController = TextEditingController();
-  TextEditingController modelController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
-  TextEditingController transmissionController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   TextEditingController descripttionController = TextEditingController();
   TextEditingController price_per_dayController = TextEditingController();
   String? imgUrl;
@@ -45,13 +43,12 @@ class AddCarCubit extends Cubit<AddCarState> {
       final currentUser = supabase.auth.currentUser;
       if (currentUser != null) {
         final car = AddCarModel(
-          brand: brandController.text,
+          name: nameController.text,
           descripttion: descripttionController.text,
           price_per_day: price_per_dayController.text,
           image_url: imgUrl ?? "",
-          model: modelController.text,
-          year: yearController.text,
-          transmission: transmissionController.text,
+          location: locationController.text,
+
           user_id: currentUser.id,
         );
         await supabase.from('cars').insert(car.toMap());
@@ -65,11 +62,9 @@ class AddCarCubit extends Cubit<AddCarState> {
   }
 
   void clearControllers() {
-    modelController.clear();
-    yearController.clear();
-    transmissionController.clear();
+    nameController.clear();
+    locationController.clear();
     descripttionController.clear();
     price_per_dayController.clear();
-    brandController.clear();
   }
 }

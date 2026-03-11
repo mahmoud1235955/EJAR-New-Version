@@ -27,9 +27,12 @@ class SignupCubit extends Cubit<SignupState> {
       if (userId != null) {
         await supabase.from("profiles").insert({
           "id": userId,
-          "name": name,
+          "full_name": name,
           "phone": phone,
           "password": password,
+          "email": email,
+          "user_id": userId,
+          "bio": "",
         });
       }
       emit(SignupSuccess());

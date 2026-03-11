@@ -1,6 +1,7 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:ejar/features/Profile/presentation/widgets/edit_profile_widget.dart';
+import 'package:ejar/features/favourite/presentation/screens/favourite_screen.dart';
 import 'package:ejar/features/home/presentation/manager/index/cubit/current_index_cubit.dart';
 import 'package:ejar/features/home/presentation/widgets/add_widget.dart';
 import 'package:ejar/features/home/presentation/widgets/chat_widget.dart';
@@ -44,7 +45,7 @@ class HomePage extends StatelessWidget {
               : currentIndex == 2
               ? AddSelectionSheet()
               : currentIndex == 3
-              ? Container()
+              ? FavouriteScreen()
               : currentIndex == 4
               ? EditProfileWidget()
               : Container();
@@ -55,23 +56,23 @@ class HomePage extends StatelessWidget {
         color: Colors.white,
         items: [
           CurvedNavigationBarItem(
-            child: Icon(Icons.home, size: 30),
+            child: Icon(Icons.home_outlined, size: 30),
             label: "Home",
           ),
           CurvedNavigationBarItem(
-            child: Icon(Icons.chat_bubble_outline, size: 30),
-            label: "Chats",
+            child: Icon(Icons.support_agent_rounded, size: 30),
+            label: "Support",
           ),
           CurvedNavigationBarItem(
             child: Icon(Icons.add, size: 30),
             label: "Add",
           ),
           CurvedNavigationBarItem(
-            child: Icon(Icons.favorite, size: 30),
+            child: Icon(Icons.favorite_outline, size: 30),
             label: "Favorites",
           ),
           CurvedNavigationBarItem(
-            child: Icon(Icons.person, size: 30),
+            child: Icon(Icons.person_outline, size: 30),
             label: "Profile",
           ),
         ],

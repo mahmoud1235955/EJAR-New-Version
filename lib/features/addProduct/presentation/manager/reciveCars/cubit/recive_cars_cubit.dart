@@ -15,11 +15,11 @@ class ReciveCarsCubit extends Cubit<ReciveCarsState> {
       final stream = supabase
           .from("cars")
           .stream(primaryKey: ["id"])
-          .eq("user_id", supabase.auth.currentUser!.id);
+          .neq("user_id", supabase.auth.currentUser!.id);
       stream.listen((List<Map<String, dynamic>> data) {
         cars = data.map((e) => AddCarModel.fromMap(e)).toList();
+        emit(ReciveCarsSuccess(cars: List.from(cars)));
       });
-      emit(ReciveCarsSuccess(cars: List.from(cars)));
     } on AuthException catch (e) {
       emit(ReciveCarsFailure(message: e.message));
     } catch (e) {

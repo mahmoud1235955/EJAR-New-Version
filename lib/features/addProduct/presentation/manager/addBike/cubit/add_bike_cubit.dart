@@ -16,7 +16,8 @@ class AddBikeCubit extends Cubit<AddBikeState> {
   TextEditingController type = TextEditingController();
   TextEditingController user_id = TextEditingController();
   TextEditingController price_per_day = TextEditingController();
-  TextEditingController condition = TextEditingController();
+  TextEditingController descripttion = TextEditingController();
+  TextEditingController location = TextEditingController();
   String image_url = '';
   AddBikeCubit() : super(AddBikeInitial());
   Future<void> storeImg({required File img}) async {
@@ -42,10 +43,11 @@ class AddBikeCubit extends Cubit<AddBikeState> {
     try {
       if (currentUser != null) {
         final bike = AddBikeModel(
-          type: type.text,
+          descripttion: descripttion.text,
+          name: type.text,
           price_per_day: price_per_day.text,
           image_url: image_url,
-          condition: condition.text,
+          location: location.text,
           user_id: currentUser.id,
         );
         await supabase.from('bikes').insert(bike.toMap());

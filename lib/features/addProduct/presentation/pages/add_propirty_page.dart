@@ -83,8 +83,16 @@ class AddPropertyPage extends StatelessWidget {
                     maxLines: 1,
                     keyboardType: TextInputType.text,
                     controller: cubit.locationController,
-                    label: "Rooms / Bathrooms",
-                    icon: Icons.bed,
+                    label: "Location",
+                    icon: Icons.location_city,
+                  ),
+                  15.gap,
+                  CustomAuthField(
+                    maxLines: 3,
+                    keyboardType: TextInputType.text,
+                    controller: cubit.locationController,
+                    label: "Description",
+                    icon: Icons.description,
                   ),
                   30.gap,
                   ElevatedButton(

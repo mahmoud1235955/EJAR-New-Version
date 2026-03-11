@@ -1,7 +1,9 @@
 import 'package:ejar/core/routes/app_routes.dart';
+import 'package:ejar/features/Profile/presentation/Manager/cubit/edit_profile_cubit.dart';
 import 'package:ejar/features/auth/presentation/pages/login_page_category.dart';
 import 'package:ejar/features/auth/presentation/pages/signup_page.dart';
 import 'package:ejar/features/auth/presentation/pages/spalsh_page.dart';
+import 'package:ejar/features/favourite/presentation/screens/favourite_screen.dart';
 import 'package:ejar/features/home/presentation/manager/index/cubit/current_index_cubit.dart';
 import 'package:ejar/features/home/presentation/pages/home_page.dart';
 import 'package:ejar/generated/l10n.dart';
@@ -27,8 +29,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CurrentIndexCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => CurrentIndexCubit()),
+        BlocProvider(create: (context) => EditProfileCubit()),
+      ],
       child: MaterialApp(
         locale: Locale("en"),
         debugShowCheckedModeBanner: false,
@@ -38,6 +43,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.login: (context) => LoginPageCategory(),
           AppRoutes.signup: (context) => SignupScreen(),
           AppRoutes.home: (context) => HomePage(),
+          AppRoutes.favorites: (context) => FavouriteScreen(),
         },
         localizationsDelegates: [
           S.delegate,

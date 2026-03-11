@@ -15,11 +15,12 @@ class ReciveBikesCubit extends Cubit<ReciveBikesState> {
       final stream = supabase
           .from("bikes")
           .stream(primaryKey: ["id"])
-          .eq("user_id", supabase.auth.currentUser!.id);
+          .neq("user_id", supabase.auth.currentUser!.id);
       stream.listen((List<Map<String, dynamic>> data) {
         bikes = data.map((e) => AddBikeModel.fromMap(e)).toList();
+        print("Data received: ${data.length}"); // حط البرينت ده ضروري للتأكد
+        emit(ReciveBikesSuccess(bikes: List.from(bikes)));
       });
-      emit(ReciveBikesSuccess(bikes: List.from(bikes)));
     } on AuthException catch (e) {
       emit(ReciveBikesFailure(message: e.message));
     } catch (e) {

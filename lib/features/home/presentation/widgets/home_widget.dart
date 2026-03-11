@@ -2,6 +2,7 @@ import 'package:ejar/core/extensions/sized_box_extenstion.dart';
 import 'package:ejar/features/addProduct/presentation/manager/ReciveBikes/cubit/recive_bikes_cubit.dart';
 import 'package:ejar/features/addProduct/presentation/manager/RecivePropirity/cubit/recive_propirities_cubit.dart';
 import 'package:ejar/features/addProduct/presentation/manager/reciveCars/cubit/recive_cars_cubit.dart';
+import 'package:ejar/features/favourite/presentation/manager/AddFav/cubit/add_to_fav_cubit.dart';
 import 'package:ejar/features/home/presentation/manager/ButtonIndex/cubit/buttons_index_cubit.dart';
 import 'package:ejar/features/home/presentation/widgets/category_widget.dart';
 import 'package:ejar/features/home/presentation/widgets/product_widget.dart';
@@ -15,12 +16,13 @@ class HomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ButtonsIndexCubit()),
+        BlocProvider(create: (context) => ButtonsIndexCubit()..startAutoPlay()),
         BlocProvider(create: (context) => ReciveCarsCubit()..getCars()),
         BlocProvider(create: (context) => ReciveBikesCubit()..getBikes()),
         BlocProvider(
           create: (context) => RecivePropiritiesCubit()..getPropirities(),
         ),
+        BlocProvider(create: (context) => AddToFavCubit()),
       ],
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -55,9 +57,9 @@ class HomeWidget extends StatelessWidget {
                   return PageView.builder(
                     itemCount: 3,
                     onPageChanged: (value) {
-                      cubit.changePageViewIndex(value);
+                      cubit.pageViewIndex = value;
                     },
-                    controller: PageController(initialPage: 0),
+                    controller: cubit.pageviewController,
                     itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.symmetric(horizontal: 10),
@@ -65,7 +67,7 @@ class HomeWidget extends StatelessWidget {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(child: Text("Page //${index + 1}")),
+                        child: Center(child: Text("Page ${index + 1}")),
                       );
                     },
                   );
@@ -117,7 +119,7 @@ class HomeWidget extends StatelessWidget {
                       },
                       child: CategoryWidget(
                         imgPath: "assets/icons/Vector (2).svg",
-                        categoryName: "Properties",
+                        categoryName: "properties",
                       ),
                     ),
                   ],
@@ -127,7 +129,7 @@ class HomeWidget extends StatelessWidget {
             10.gap,
             BlocBuilder<ButtonsIndexCubit, ButtonsIndexState>(
               builder: (context, state) {
-                if (state is ButtonsIndexSuccess && state.buttonIndex == 0) {
+                if (state is ButtonsIndexSuccess && state.buttonIndex == 1) {
                   return Container(
                     padding: EdgeInsets.only(top: 45, left: 15, right: 15),
                     width: double.infinity,
@@ -153,10 +155,12 @@ class HomeWidget extends StatelessWidget {
                               final car = state.cars[index];
                               return ProductWidget(
                                 imgPath: car.image_url,
-                                productLocation: car.year,
-                                productName: car.model,
+                                productLocation: car.name,
+                                productName: car.location,
                                 productPrice: car.price_per_day,
                                 productShortDescription: car.descripttion,
+                                category: "Cars",
+                                productId: car.id.toString(),
                               );
                             },
                           );
@@ -167,7 +171,7 @@ class HomeWidget extends StatelessWidget {
                     ),
                   );
                 } else if (state is ButtonsIndexSuccess &&
-                    state.buttonIndex == 1) {
+                    state.buttonIndex == 0) {
                   return Container(
                     padding: EdgeInsets.only(top: 45, left: 15, right: 15),
                     width: double.infinity,
@@ -192,11 +196,13 @@ class HomeWidget extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final bike = state.bikes[index];
                               return ProductWidget(
+                                productName: bike.name,
                                 imgPath: bike.image_url,
-                                productLocation: bike.condition,
-                                productName: bike.type,
+                                productLocation: bike.location,
                                 productPrice: bike.price_per_day,
-                                productShortDescription: "jkskjdjsjksui",
+                                productShortDescription: bike.descripttion,
+                                category: "Bikes",
+                                productId: bike.id.toString(),
                               );
                             },
                           );
@@ -236,12 +242,15 @@ class HomeWidget extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   final propirity = state.propirities[index];
                                   return ProductWidget(
-                                    imgPath: propirity.img_url,
+                                    productName: propirity.name,
+                                    imgPath: propirity.image_url,
                                     productLocation: propirity.location,
-                                    productName: propirity.title,
-                                    productPrice: propirity.price_per_month,
+
+                                    productPrice: propirity.price_per_day,
                                     productShortDescription:
-                                        propirity.description,
+                                        propirity.descripttion,
+                                    category: "Propirity",
+                                    productId: propirity.id.toString(),
                                   );
                                 },
                               );
