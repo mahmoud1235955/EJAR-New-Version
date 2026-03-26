@@ -17,6 +17,7 @@ class ReciveProfileDataCubit extends Cubit<ReciveProfileDataState> {
           .select()
           .eq("id", supabase.auth.currentUser!.id)
           .single();
+          if (isClosed) return;
       emit(
         ReciveProfileDataSuccess(profile: ReciveProfileModel.fromJson(data)),
       );

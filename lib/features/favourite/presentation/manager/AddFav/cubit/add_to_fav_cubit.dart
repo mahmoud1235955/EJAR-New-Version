@@ -35,7 +35,7 @@ class AddToFavCubit extends Cubit<AddToFavState> {
     } on AuthException catch (e) {
       emit(AddToFavFailure(e.message));
     } catch (e) {
-      emit(AddToFavFailure(e.toString()));
+      emit(AddToFavFailure("This product is already in your favorites"));
     }
   }
 }

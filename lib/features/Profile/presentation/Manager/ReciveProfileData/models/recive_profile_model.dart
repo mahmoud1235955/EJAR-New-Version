@@ -3,11 +3,12 @@ class ReciveProfileModel {
   final String phone;
   final String bio;
   final String email;
+  final String image_url;
   ReciveProfileModel({
     required this.full_name,
     required this.phone,
     required this.bio,
-    required this.email,
+    required this.email, required this.image_url,
   });
 
   factory ReciveProfileModel.fromJson(Map<String, dynamic> json) =>
@@ -15,6 +16,6 @@ class ReciveProfileModel {
         full_name: json['full_name'],
         phone: json['phone'],
         bio: json['bio'],
-        email: json['email'],
+        email: json['email'], image_url: json['image_url'],
       );
 }

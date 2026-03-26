@@ -24,6 +24,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             "email": emailController.text,
           })
           .eq("id", supabase.auth.currentUser!.id);
+          if (isClosed) return;
       emit(EditProfileSuccess());
     } on Exception catch (e) {
       emit(EditProfileError(e.toString()));

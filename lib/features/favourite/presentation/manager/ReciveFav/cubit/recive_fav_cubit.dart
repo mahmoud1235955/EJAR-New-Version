@@ -17,7 +17,9 @@ class ReciveFavCubit extends Cubit<ReciveFavState> {
           .eq("user_id", supabase.auth.currentUser!.id)
           .listen(
             (data) {
-              emit(ReciveFavSuccess(favorites: data));
+              if (!isClosed) {
+                emit(ReciveFavSuccess(favorites: data));
+              }
             },
             onError: (error) {
               // هنا بنمسك الـ Timeout ونظهره للمستخدم بدل ما الأبلكيشن يضرب
@@ -37,7 +39,10 @@ class ReciveFavCubit extends Cubit<ReciveFavState> {
   Future<void> deleteFav() async {
     try {
       emit(ReciveFavLoading());
-      await supabase.from("favorites").delete();
+      await supabase
+          .from("favorites")
+          .delete()
+          .eq("user_id", supabase.auth.currentUser!.id);
       emit(DeleteFavSuccess());
     } on AuthException catch (e) {
       emit(ReciveFavFailure(message: e.message));

@@ -52,8 +52,14 @@ class HomePage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.blueAccent,
-        color: Colors.white,
+        // backgroundColor: Colors.blueAccent,
+        // color: Colors.white,
+     color:    Theme.of(context).brightness == Brightness.light 
+      ? Colors.white // في الـ Light
+      : const Color(0xFF121212), // في الـ Dark
+
+  // 3. لون الأيقونة النشطة
+  buttonBackgroundColor:Theme.of(context).brightness == Brightness.light ? Colors.white : const Color(0xFF121212) ,
         items: [
           CurvedNavigationBarItem(
             child: Icon(Icons.home_outlined, size: 30),

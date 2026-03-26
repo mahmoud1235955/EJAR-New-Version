@@ -1,5 +1,11 @@
+import 'package:ejar/core/Manager/SwitchTheme/cubit/toggle_theme_cubit.dart';
+import 'package:ejar/core/Theme/app_theme.dart';
 import 'package:ejar/core/routes/app_routes.dart';
+import 'package:ejar/features/MyProducts/presentation/screen/myProduct_screen.dart';
+import 'package:ejar/features/Payment_Method/presentation/screens/payment_screen.dart';
 import 'package:ejar/features/Profile/presentation/Manager/cubit/edit_profile_cubit.dart';
+import 'package:ejar/features/auth/presentation/manager/LogOut/cubit/logout_cubit.dart';
+import 'package:ejar/features/auth/presentation/manager/forgotPassword/cubit/forgot_password_cubit.dart';
 import 'package:ejar/features/auth/presentation/pages/login_page_category.dart';
 import 'package:ejar/features/auth/presentation/pages/signup_page.dart';
 import 'package:ejar/features/auth/presentation/pages/spalsh_page.dart';
@@ -11,8 +17,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(
+      (await getApplicationDocumentsDirectory()).path,
+    ),
+  );
   await Supabase.initialize(
     url: 'https://uwlcjjsbyobufliiueov.supabase.co',
     anonKey:
@@ -33,25 +47,36 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => CurrentIndexCubit()),
         BlocProvider(create: (context) => EditProfileCubit()),
+        BlocProvider(create: (context) => LogoutCubit()),
+        BlocProvider(create: (context) => ThemeCubit()),
+        BlocProvider(create: (context) => ForgotPasswordCubit()),
       ],
-      child: MaterialApp(
-        locale: Locale("en"),
-        debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.home,
-        routes: {
-          AppRoutes.splash: (context) => SpalshPage(),
-          AppRoutes.login: (context) => LoginPageCategory(),
-          AppRoutes.signup: (context) => SignupScreen(),
-          AppRoutes.home: (context) => HomePage(),
-          AppRoutes.favorites: (context) => FavouriteScreen(),
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, state) {
+          return MaterialApp(
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state,
+            locale: Locale("en"),
+            debugShowCheckedModeBanner: false,
+            initialRoute: AppRoutes.home,
+            routes: {
+              AppRoutes.splash: (context) => SpalshPage(),
+              AppRoutes.login: (context) => LoginPageCategory(),
+              AppRoutes.signup: (context) => SignupScreen(),
+              AppRoutes.home: (context) => HomePage(),
+              AppRoutes.favorites: (context) => FavouriteScreen(),
+              AppRoutes.myProduct: (context) => MyProductsScreen(),
+            },
+            localizationsDelegates: [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+          );
         },
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
       ),
     );
   }

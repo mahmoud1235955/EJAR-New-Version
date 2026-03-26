@@ -1,9 +1,11 @@
+import 'package:ejar/core/Manager/SwitchTheme/cubit/toggle_theme_cubit.dart';
 import 'package:ejar/core/colors/app_color.dart';
 import 'package:ejar/core/extensions/sized_box_extenstion.dart';
 import 'package:ejar/core/routes/app_routes.dart';
 import 'package:ejar/core/routes/custom_auth_field.dart';
 import 'package:ejar/features/Profile/presentation/Manager/ReciveProfileData/cubit/recive_profile_data_cubit.dart';
 import 'package:ejar/features/Profile/presentation/Manager/cubit/edit_profile_cubit.dart';
+import 'package:ejar/features/auth/presentation/manager/LogOut/cubit/logout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,8 +15,12 @@ class EditProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ReciveProfileDataCubit()..getProfileData(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ReciveProfileDataCubit()..getProfileData(),
+        ),
+      ],
       child: SingleChildScrollView(
         child: BlocBuilder<ReciveProfileDataCubit, ReciveProfileDataState>(
           builder: (context, state) {
@@ -36,9 +42,9 @@ class EditProfileWidget extends StatelessWidget {
                         backgroundColor: Color(0xff087513), // لونك المفضل
                         child: CircleAvatar(
                           radius: 56,
-                          backgroundImage: AssetImage(
-                            "assets/images/mahmoud_profile.png",
-                          ), // صورتك
+                          backgroundImage: NetworkImage(
+                            state.profile.image_url,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -90,7 +96,7 @@ class EditProfileWidget extends StatelessWidget {
                             "Arabic ",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black87,
+                              //    color: Colors.black87,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -98,21 +104,28 @@ class EditProfileWidget extends StatelessWidget {
                           onTap: () {},
                         ),
                         20.gap,
-                        ListTile(
-                          leading: const Icon(
-                            Icons.sunny,
-                            color: AppColors.primary,
-                          ),
-                          title: const Text(
-                            "Theme ",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: const Icon(Icons.change_circle_outlined),
-                          onTap: () {},
+                        BlocBuilder<ThemeCubit, ThemeMode>(
+                          builder: (context, state) {
+                            return ListTile(
+                              leading: const Icon(Icons.brightness_6),
+                              title: Text(
+                                state == ThemeMode.dark ? "Dark" : "Dark",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              trailing: Switch(
+                                // بيفحص الحالة الحالية هل هي Dark ولا لا
+                                value:
+                                    context.read<ThemeCubit>().state ==
+                                    ThemeMode.dark,
+                                onChanged: (isDark) {
+                                  // بينادي على الميثود اللي بتعمل emit وتخزن في الـ Hydrated أوتوماتيك
+                                  context.read<ThemeCubit>().toggleTheme(
+                                    isDark,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -125,6 +138,14 @@ class EditProfileWidget extends StatelessWidget {
                       children: [
                         const Divider(),
                         _buildMenuTile(
+                          Icons.production_quantity_limits,
+                          "My Products",
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.myProduct),
+                          context: context,
+                        ),
+                        _buildMenuTile(
+                          context: context,
                           Icons.favorite_border,
                           "Saved Items",
                           onTap: () {
@@ -132,10 +153,48 @@ class EditProfileWidget extends StatelessWidget {
                           },
                         ),
                         _buildMenuTile(
+                          context: context,
                           Icons.logout,
                           "Logout",
                           isLogout: true,
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Logout"),
+                                  content: Text(
+                                    "Are you sure you want to logout?",
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("No"),
+                                    ),
+                                    BlocBuilder<LogoutCubit, LogoutState>(
+                                      builder: (context, state) {
+                                        return TextButton(
+                                          onPressed: () {
+                                            context
+                                                .read<LogoutCubit>()
+                                                .logout();
+                                            Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              AppRoutes.login,
+                                              (route) => false,
+                                            );
+                                          },
+                                          child: Text("Yes"),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -300,13 +359,18 @@ class EditProfileWidget extends StatelessWidget {
     String title, {
     bool isLogout = false,
     required VoidCallback onTap,
+    required BuildContext context,
   }) {
     return ListTile(
-      leading: Icon(icon, color: isLogout ? Colors.red : Colors.black87),
+      leading: Icon(icon, color: isLogout ? Colors.red : AppColors.primary),
       title: Text(
         title,
         style: TextStyle(
-          color: isLogout ? Colors.red : Colors.black87,
+          color: isLogout
+              ? Colors.red
+              : Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black87,
           fontWeight: FontWeight.w500,
         ),
       ),

@@ -30,6 +30,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.8
   curved_labeled_navigation_bar: ^2.0.6
+  dio: ^5.9.2
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
@@ -39,9 +40,14 @@ dependencies:
   image_picker: ^1.2.1
   supabase_flutter: ^2.12.0
 dev_dependencies:
+  bloc: ^9.2.0
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
+  hydrated_bloc: ^10.1.1
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.2
+  webview_flutter: ^4.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

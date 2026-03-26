@@ -113,6 +113,7 @@ class ProductWidget extends StatelessWidget {
                           );
                         },
                         icon: const Icon(
+                          
                           Icons.favorite_outline,
                           size: 20,
                           color: Colors.black,
