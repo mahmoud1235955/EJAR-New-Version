@@ -50,4 +50,15 @@ class ReciveFavCubit extends Cubit<ReciveFavState> {
       emit(ReciveFavFailure(message: e.toString()));
     }
   }
+
+  Future<void> deleteProduct(String id) async {
+    try {
+      await supabase.from("favorites").delete().eq("id", id);
+      emit(DeleteProductSuccess());
+    } on AuthException catch (e) {
+      emit(ReciveFavFailure(message: e.message));
+    } catch (e) {
+      emit(ReciveFavFailure(message: e.toString()));
+    }
+  }
 }

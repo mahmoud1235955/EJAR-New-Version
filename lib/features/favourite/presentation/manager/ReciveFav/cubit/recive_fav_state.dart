@@ -14,6 +14,8 @@ final class ReciveFavFailure extends ReciveFavState {
 
 final class DeleteFavSuccess extends ReciveFavState {}
 
+final class DeleteProductSuccess extends ReciveFavState {}
+
 final class ReciveFavSuccess extends ReciveFavState {
   final List<Map<String, dynamic>> favorites;
   ReciveFavSuccess({required this.favorites});
